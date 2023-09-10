@@ -4,7 +4,7 @@
 #' @param url PARAM_DESCRIPTION
 #' @param directory PARAM_DESCRIPTION, Default: NULL
 #' @param tables PARAM_DESCRIPTION, Default: c("abstract", "claims", "cited_by", "patent_citations", "ipc")
-#' @param show_progress PARAM_DESCRIPTION, Default: F
+#' @param show_progress PARAM_DESCRIPTION, Default: FALSE
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
 #' @examples 
@@ -37,7 +37,7 @@
 patent_scraping <- function(url, 
                             directory = NULL, 
                             tables = c('abstract', 'claims', 'cited_by', 'patent_citations', 'ipc'), 
-                            show_progress = F) {
+                            show_progress = FALSE) {
 
   if (!is.character(tables)) stop('`tables` must be a character string.')
   if (!is.logical(show_progress)) stop('`show_progress` must be logical.')
@@ -56,7 +56,7 @@ patent_scraping <- function(url,
   # id
   id <- tibble::tibble(url = url, day = format(Sys.time(), '%Y-%m-%d'), hour = format(Sys.time(), '%T'))
   id$id <- gsub('https://patents.google.com/patent/', '', url) |> {\(x) gsub('\\/.*$', '', x)}()
-  id$tables <- tables
+  # id$tables <- tables
 
   # progress bar
   if (show_progress == T) print(paste(id$day, id$hour, url, sep = ' '))
@@ -131,7 +131,7 @@ patent_scraping <- function(url,
           rvest::html_element('xpath' = '//*[contains (text(), "Families Citing this family")]//following::table/tbody') |> 
           rvest::html_table() |>
           stats::setNames(names(thead_cited_by)) |>
-          dplyr::mutate(publication_number = gsub('\n.*$', '', publication_number)) |>
+          dplyr::mutate(publication_number = gsub('\n.*$', '', .data$publication_number)) |>
           dplyr::mutate(id = id$id) |>
           dplyr::relocate(id) -> 
           cited_by  
@@ -163,7 +163,7 @@ patent_scraping <- function(url,
           rvest::html_element('xpath' = '//*[contains (text(), "Family Cites Families")]//following::table/tbody') |>
           rvest::html_table() |>
           stats::setNames(names(thead_patent_citations)) |>
-          dplyr::mutate(publication_number = gsub('\n.*$', '', publication_number)) |>
+          dplyr::mutate(publication_number = gsub('\n.*$', '', .data$publication_number)) |>
           dplyr::mutate(id = id$id) |>
           dplyr::relocate(id) -> 
           patent_citations

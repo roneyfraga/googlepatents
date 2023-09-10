@@ -1,10 +1,10 @@
 Package: googlepatents
-Title: What the Package Does (One Line, Title Case)
+Title: Scraping Data from Google Patents
 Version: 0.0.0.9000
 Authors@R: 
-    person("Roney", "Souza", , "roneyfraga@gmail.com", role = c("aut", "cre"),
+    person("Roney", "Fraga Souza", , "roneyfraga@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "orcid.org/0000-0001-5750-489X"))
-Description: What the package does (one paragraph).
+Description: Scraping Data from Google Patents. The tables extracted are: abstract.csv, claims.csv, cited_by.csv, patent_citations.csv and ipc.csv.
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
@@ -19,3 +19,10 @@ Imports:
     stats,
     stringr,
     tibble
+Depends: 
+    R (>= 2.10)
+LazyData: true
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr

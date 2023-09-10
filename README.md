@@ -1,38 +1,29 @@
----
-output: github_document
----
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%"
-)
-```
 
 # `googlepatents`
 
 <!-- badges: start -->
 <!-- badges: end -->
 
-The goal of googlepatents is to download data from patents available in [Google Patents](https://patents.google.com/) website.
+The goal of googlepatents is to download data from patents available in
+[Google Patents](https://patents.google.com/) website.
 
 ## Installation
 
 You can install the `googlepatents` package by:
 
-```r
+``` r
 devtools::install_github("roneyfraga/googlepatents")
 ```
 
 ## How To Use
 
-The tables: `abstract.csv`, `claims.csv`, `cited_by.csv`, `patent_citations.csv` and `ipc.csv` are saved in the `rawfiles_pantents/` directory.
+The tables: `abstract.csv`, `claims.csv`, `cited_by.csv`,
+`patent_citations.csv` and `ipc.csv` are saved in the
+`rawfiles_pantents/` directory.
 
-```{r easy-mode, eval = F, echo = T}
+``` r
 library(googlepatents)
 
 patent_scraping(url = 'https://patents.google.com/patent/US10780391B2/en',
@@ -43,7 +34,7 @@ patent_scraping(url = 'https://patents.google.com/patent/US10780391B2/en',
 fs::dir_ls('rawfiles_patents/')
 ```
 
-```r 
+``` r
 rawfiles_patents/abstract.csv
 rawfiles_patents/cited_by.csv
 rawfiles_patents/claims.csv
@@ -51,4 +42,3 @@ rawfiles_patents/id.csv
 rawfiles_patents/ipc.csv
 rawfiles_patents/patent_citations.csv
 ```
-

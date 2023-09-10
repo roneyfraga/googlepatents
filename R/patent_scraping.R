@@ -1,8 +1,48 @@
 
+#' @title Scraping Data from Google Patents
+#' @description Scraping data from google patents
+#' @param url Google Patents URL
+#' @param directory Path do save patent data (csv's) from google patents, Default: NULL
+#' @param tables Tables to be extracted, Default: c("abstract", "claims", "cited_by", "patent_citations", "ipc")
+#' @param show_progress logical, Default: FALSE
+#' @return OUTPUT_DESCRIPTION
+#' @details DETAILS
+#' @examples 
+#' \dontrun{
+#' if(interactive()){
+#'  # The tables: abstract.csv, claims.csv, cited_by.csv, patent_citations.csv and ipc.csv are 
+#'  # saved in the rawfiles_pantents/ directory.
+#'  patent_scraping(url = 'https://patents.google.com/patent/US10780391B2/en',
+#'                  directory = 'rawfiles_pantents',
+#'                  tables = c('abstract', 'claims', 'cited_by', 'patent_citations', 'ipc'),
+#'                  show_progress = FALSE)
+#'  }
+#' }
+#' @seealso 
+#'  \code{\link[fs]{create}}
+#'  \code{\link[here]{here}}
+#'  \code{\link[tibble]{tibble}}
+#'  \code{\link[rvest]{reexports}}, \code{\link[rvest]{html_element}}, \code{\link[rvest]{html_text}}, \code{\link[rvest]{html_table}}
+#'  \code{\link[readr]{write_delim}}
+#'  \code{\link[janitor]{clean_names}}
+#'  \code{\link[stats]{setNames}}
+#'  \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{relocate}}
+#'  \code{\link[stringr]{str_locate}}, \code{\link[stringr]{str_sub}}
+#' @rdname patent_scraping
+#' @export 
+#' @importFrom fs dir_create
+#' @importFrom here here
+#' @importFrom tibble tibble
+#' @importFrom rvest read_html html_element html_text2 html_table
+#' @importFrom readr write_csv
+#' @importFrom janitor clean_names
+#' @importFrom stats setNames
+#' @importFrom dplyr mutate relocate
+#' @importFrom stringr str_locate_all str_sub
 patent_scraping <- function(url, 
                             directory = NULL, 
                             tables = c('abstract', 'claims', 'cited_by', 'patent_citations', 'ipc'), 
-                            show_progress = F) {
+                            show_progress = FALSE) {
 
   if (!is.character(tables)) stop('`tables` must be a character string.')
   if (!is.logical(show_progress)) stop('`show_progress` must be logical.')
@@ -19,9 +59,10 @@ patent_scraping <- function(url,
 
   # -----
   # id
-  id <- tibble::tibble(url = url, day = format(Sys.time(), '%Y-%m-%d'), hour = format(Sys.time(), '%T'))
-  id$id <- gsub('https://patents.google.com/patent/', '', url) |> {\(x) gsub('\\/.*$', '', x)}()
-  id$tables <- tables
+  tibble::tibble(url = url, day = format(Sys.time(), '%Y-%m-%d'), hour = format(Sys.time(), '%T')) |>
+    dplyr::mutate(id = gsub('https://patents.google.com/patent/', '', url) |> {\(x) gsub('\\/.*$', '', x)}()) |>
+    dplyr::mutate(tables = stringr::str_c(tables, collapse = ', ')) ->
+    id
 
   # progress bar
   if (show_progress == T) print(paste(id$day, id$hour, url, sep = ' '))
@@ -96,7 +137,7 @@ patent_scraping <- function(url,
           rvest::html_element('xpath' = '//*[contains (text(), "Families Citing this family")]//following::table/tbody') |> 
           rvest::html_table() |>
           stats::setNames(names(thead_cited_by)) |>
-          dplyr::mutate(publication_number = gsub('\n.*$', '', publication_number)) |>
+          dplyr::mutate(publication_number = gsub('\n.*$', '', .data$publication_number)) |>
           dplyr::mutate(id = id$id) |>
           dplyr::relocate(id) -> 
           cited_by  
@@ -128,7 +169,7 @@ patent_scraping <- function(url,
           rvest::html_element('xpath' = '//*[contains (text(), "Family Cites Families")]//following::table/tbody') |>
           rvest::html_table() |>
           stats::setNames(names(thead_patent_citations)) |>
-          dplyr::mutate(publication_number = gsub('\n.*$', '', publication_number)) |>
+          dplyr::mutate(publication_number = gsub('\n.*$', '', .data$publication_number)) |>
           dplyr::mutate(id = id$id) |>
           dplyr::relocate(id) -> 
           patent_citations
