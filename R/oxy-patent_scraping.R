@@ -4,6 +4,7 @@
 #' @param url PARAM_DESCRIPTION
 #' @param directory PARAM_DESCRIPTION, Default: NULL
 #' @param tables PARAM_DESCRIPTION, Default: c("abstract", "claims", "cited_by", "patent_citations", "ipc")
+#' @param log PARAM_DESCRIPTION, Default: TRUE
 #' @param show_progress PARAM_DESCRIPTION, Default: FALSE
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -17,26 +18,27 @@
 #'  \code{\link[fs]{create}}
 #'  \code{\link[here]{here}}
 #'  \code{\link[tibble]{tibble}}
+#'  \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{relocate}}
+#'  \code{\link[stringr]{str_c}}, \code{\link[stringr]{str_locate}}, \code{\link[stringr]{str_sub}}
 #'  \code{\link[rvest]{reexports}}, \code{\link[rvest]{html_element}}, \code{\link[rvest]{html_text}}, \code{\link[rvest]{html_table}}
 #'  \code{\link[readr]{write_delim}}
 #'  \code{\link[janitor]{clean_names}}
 #'  \code{\link[stats]{setNames}}
-#'  \code{\link[dplyr]{mutate}}, \code{\link[dplyr]{relocate}}
-#'  \code{\link[stringr]{str_locate}}, \code{\link[stringr]{str_sub}}
 #' @rdname patent_scraping
 #' @export 
 #' @importFrom fs dir_create
 #' @importFrom here here
 #' @importFrom tibble tibble
+#' @importFrom dplyr mutate relocate
+#' @importFrom stringr str_c str_locate_all str_sub
 #' @importFrom rvest read_html html_element html_text2 html_table
 #' @importFrom readr write_csv
 #' @importFrom janitor clean_names
 #' @importFrom stats setNames
-#' @importFrom dplyr mutate relocate
-#' @importFrom stringr str_locate_all str_sub
 patent_scraping <- function(url, 
                             directory = NULL, 
                             tables = c('abstract', 'claims', 'cited_by', 'patent_citations', 'ipc'), 
+                            log = TRUE,
                             show_progress = FALSE) {
 
   if (!is.character(tables)) stop('`tables` must be a character string.')
@@ -54,9 +56,10 @@ patent_scraping <- function(url,
 
   # -----
   # id
-  id <- tibble::tibble(url = url, day = format(Sys.time(), '%Y-%m-%d'), hour = format(Sys.time(), '%T'))
-  id$id <- gsub('https://patents.google.com/patent/', '', url) |> {\(x) gsub('\\/.*$', '', x)}()
-  # id$tables <- tables
+  tibble::tibble(url = url, day = format(Sys.time(), '%Y-%m-%d'), hour = format(Sys.time(), '%T')) |>
+    dplyr::mutate(id = gsub('https://patents.google.com/patent/', '', url) |> {\(x) gsub('\\/.*$', '', x)}()) |>
+    dplyr::mutate(tables = stringr::str_c(tables, collapse = ', ')) ->
+    id
 
   # progress bar
   if (show_progress == T) print(paste(id$day, id$hour, url, sep = ' '))
@@ -198,7 +201,7 @@ patent_scraping <- function(url,
 
   # -----
   # id export csv
-  readr::write_csv(id, here::here(estou_aqui, 'id.csv'), append = T, col_names = !file.exists(here::here(estou_aqui, 'id.csv')))
+  if (log == T) readr::write_csv(id, here::here(estou_aqui, 'log.csv'), append = T, col_names = !file.exists(here::here(estou_aqui, 'log.csv')))
 
 }
 

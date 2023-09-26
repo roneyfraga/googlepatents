@@ -60,6 +60,7 @@ Scraping data from google patents"><!-- mathjax --><script src="https://cdnjs.cl
 <span>  <span class="va">url</span>,</span>
 <span>  directory <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"abstract"</span>, <span class="st">"claims"</span>, <span class="st">"cited_by"</span>, <span class="st">"patent_citations"</span>, <span class="st">"ipc"</span><span class="op">)</span>,</span>
+<span>  log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  show_progress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -67,6 +68,7 @@ Scraping data from google patents"><!-- mathjax --><script src="https://cdnjs.cl
 <span>  <span class="va">url</span>,</span>
 <span>  directory <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  tables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"abstract"</span>, <span class="st">"claims"</span>, <span class="st">"cited_by"</span>, <span class="st">"patent_citations"</span>, <span class="st">"ipc"</span><span class="op">)</span>,</span>
+<span>  log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  show_progress <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -83,6 +85,10 @@ Scraping data from google patents"><!-- mathjax --><script src="https://cdnjs.cl
 
 <dt>tables</dt>
 <dd><p>Tables to be extracted, Default: c("abstract", "claims", "cited_by", "patent_citations", "ipc")</p></dd>
+
+
+<dt>log</dt>
+<dd><p>save a log.csv file, Default: TRUE</p></dd>
 
 
 <dt>show_progress</dt>
@@ -108,12 +114,12 @@ Scraping data from google patents"><!-- mathjax --><script src="https://cdnjs.cl
     <div class="dont-index"><p><code><a href="https://fs.r-lib.org/reference/create.html" class="external-link">create</a></code>
 <code><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></code>
 <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code>
+<code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate</a></code>
+<code><a href="https://stringr.tidyverse.org/reference/str_c.html" class="external-link">str_c</a></code>, <code><a href="https://stringr.tidyverse.org/reference/str_locate.html" class="external-link">str_locate</a></code>, <code><a href="https://stringr.tidyverse.org/reference/str_sub.html" class="external-link">str_sub</a></code>
 <code><a href="https://rvest.tidyverse.org/reference/reexports.html" class="external-link">reexports</a></code>, <code><a href="https://rvest.tidyverse.org/reference/html_element.html" class="external-link">html_element</a></code>, <code><a href="https://rvest.tidyverse.org/reference/html_text.html" class="external-link">html_text</a></code>, <code><a href="https://rvest.tidyverse.org/reference/html_table.html" class="external-link">html_table</a></code>
 <code><a href="https://readr.tidyverse.org/reference/write_delim.html" class="external-link">write_delim</a></code>
 <code><a href="https://sfirke.github.io/janitor/reference/clean_names.html" class="external-link">clean_names</a></code>
-<code><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></code>
-<code><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></code>, <code><a href="https://dplyr.tidyverse.org/reference/relocate.html" class="external-link">relocate</a></code>
-<code><a href="https://stringr.tidyverse.org/reference/str_locate.html" class="external-link">str_locate</a></code>, <code><a href="https://stringr.tidyverse.org/reference/str_sub.html" class="external-link">str_sub</a></code></p>
+<code><a href="https://rdrr.io/r/stats/setNames.html" class="external-link">setNames</a></code></p>
 <p><code><a href="https://fs.r-lib.org/reference/create.html" class="external-link">create</a></code>
 <code><a href="https://here.r-lib.org//reference/here.html" class="external-link">here</a></code>
 <code><a href="https://tibble.tidyverse.org/reference/tibble.html" class="external-link">tibble</a></code>

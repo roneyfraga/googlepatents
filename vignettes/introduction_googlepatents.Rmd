@@ -32,6 +32,7 @@ library(googlepatents)
 patent_scraping(url = 'https://patents.google.com/patent/US10780391B2/en',
                 directory = 'rawfiles_patents',
                 tables = c('abstract', 'claims', 'cited_by', 'patent_citations', 'ipc'),
+                log = TRUE,
                 show_progress = FALSE)
 
 fs::dir_ls('rawfiles_patents/')
@@ -41,8 +42,8 @@ fs::dir_ls('rawfiles_patents/')
 rawfiles_patents/abstract.csv
 rawfiles_patents/cited_by.csv
 rawfiles_patents/claims.csv
-rawfiles_patents/id.csv
 rawfiles_patents/ipc.csv
+rawfiles_patents/log.csv
 rawfiles_patents/patent_citations.csv
 ```
 
@@ -70,10 +71,11 @@ readr::read_csv('~/Downloads/gp-search-20230830-124212.csv', skip = 1) |>
 furrr::future_walk(pat$result_link, 
                    patent_scraping, 
                    directory = 'rawfiles_raspagem',
+                   log = TRUE,
                    tables = c('cited_by', 'patent_citations', 'abstract', 'claims', 'ipc'))
 
 ## If Google blocks access to the site, restart from the last patent downloaded.
-readr::read_csv('rawfiles_raspagem/id.csv') |>
+readr::read_csv('rawfiles_raspagem/log.csv') |>
   dplyr::distinct(id, .keep_all = TRUE) |>
   dplyr::pull(url) ->
   urls_baixadas

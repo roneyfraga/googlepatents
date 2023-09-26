@@ -8,6 +8,7 @@ patent_scraping(
   url,
   directory = NULL,
   tables = c("abstract", "claims", "cited_by", "patent_citations", "ipc"),
+  log = TRUE,
   show_progress = FALSE
 )
 
@@ -15,6 +16,7 @@ patent_scraping(
   url,
   directory = NULL,
   tables = c("abstract", "claims", "cited_by", "patent_citations", "ipc"),
+  log = TRUE,
   show_progress = FALSE
 )
 }
@@ -24,6 +26,8 @@ patent_scraping(
 \item{directory}{Path do save patent data (csv's) from google patents, Default: NULL}
 
 \item{tables}{Tables to be extracted, Default: c("abstract", "claims", "cited_by", "patent_citations", "ipc")}
+
+\item{log}{save a log.csv file, Default: TRUE}
 
 \item{show_progress}{logical, Default: FALSE}
 }
@@ -63,12 +67,12 @@ if(interactive()){
 \code{\link[fs]{create}}
 \code{\link[here]{here}}
 \code{\link[tibble]{tibble}}
+\code{\link[dplyr]{mutate}}, \code{\link[dplyr]{relocate}}
+\code{\link[stringr]{str_c}}, \code{\link[stringr]{str_locate}}, \code{\link[stringr]{str_sub}}
 \code{\link[rvest]{reexports}}, \code{\link[rvest]{html_element}}, \code{\link[rvest]{html_text}}, \code{\link[rvest]{html_table}}
 \code{\link[readr]{write_delim}}
 \code{\link[janitor]{clean_names}}
 \code{\link[stats]{setNames}}
-\code{\link[dplyr]{mutate}}, \code{\link[dplyr]{relocate}}
-\code{\link[stringr]{str_locate}}, \code{\link[stringr]{str_sub}}
 
 \code{\link[fs]{create}}
 \code{\link[here]{here}}

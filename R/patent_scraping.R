@@ -4,6 +4,7 @@
 #' @param url Google Patents URL
 #' @param directory Path do save patent data (csv's) from google patents, Default: NULL
 #' @param tables Tables to be extracted, Default: c("abstract", "claims", "cited_by", "patent_citations", "ipc")
+#' @param log save a log.csv file, Default: TRUE
 #' @param show_progress logical, Default: FALSE
 #' @return OUTPUT_DESCRIPTION
 #' @details DETAILS
@@ -42,6 +43,7 @@
 patent_scraping <- function(url, 
                             directory = NULL, 
                             tables = c('abstract', 'claims', 'cited_by', 'patent_citations', 'ipc'), 
+                            log = TRUE,
                             show_progress = FALSE) {
 
   if (!is.character(tables)) stop('`tables` must be a character string.')
@@ -204,7 +206,7 @@ patent_scraping <- function(url,
 
   # -----
   # id export csv
-  readr::write_csv(id, here::here(estou_aqui, 'id.csv'), append = T, col_names = !file.exists(here::here(estou_aqui, 'id.csv')))
+  if (log == T) readr::write_csv(id, here::here(estou_aqui, 'log.csv'), append = T, col_names = !file.exists(here::here(estou_aqui, 'log.csv')))
 
 }
 

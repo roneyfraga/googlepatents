@@ -100,6 +100,7 @@ directory.</p>
 <span><span class="fu"><a href="../reference/patent_scraping.html">patent_scraping</a></span><span class="op">(</span>url <span class="op">=</span> <span class="st">'https://patents.google.com/patent/US10780391B2/en'</span>,</span>
 <span>                directory <span class="op">=</span> <span class="st">'rawfiles_patents'</span>,</span>
 <span>                tables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'abstract'</span>, <span class="st">'claims'</span>, <span class="st">'cited_by'</span>, <span class="st">'patent_citations'</span>, <span class="st">'ipc'</span><span class="op">)</span>,</span>
+<span>                log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                show_progress <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">fs</span><span class="fu">::</span><span class="fu"><a href="https://fs.r-lib.org/reference/dir_ls.html" class="external-link">dir_ls</a></span><span class="op">(</span><span class="st">'rawfiles_patents/'</span><span class="op">)</span></span></code></pre></div>
@@ -107,8 +108,8 @@ directory.</p>
 <code class="sourceCode R"><span><span class="va">rawfiles_patents</span><span class="op">/</span><span class="va">abstract.csv</span></span>
 <span><span class="va">rawfiles_patents</span><span class="op">/</span><span class="va">cited_by.csv</span></span>
 <span><span class="va">rawfiles_patents</span><span class="op">/</span><span class="va">claims.csv</span></span>
-<span><span class="va">rawfiles_patents</span><span class="op">/</span><span class="va">id.csv</span></span>
 <span><span class="va">rawfiles_patents</span><span class="op">/</span><span class="va">ipc.csv</span></span>
+<span><span class="va">rawfiles_patents</span><span class="op">/</span><span class="va">log.csv</span></span>
 <span><span class="va">rawfiles_patents</span><span class="op">/</span><span class="va">patent_citations.csv</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -137,10 +138,11 @@ directory.</p>
 <span><span class="fu">furrr</span><span class="fu">::</span><span class="fu"><a href="https://furrr.futureverse.org/reference/future_map.html" class="external-link">future_walk</a></span><span class="op">(</span><span class="va">pat</span><span class="op">$</span><span class="va">result_link</span>, </span>
 <span>                   <span class="va">patent_scraping</span>, </span>
 <span>                   directory <span class="op">=</span> <span class="st">'rawfiles_raspagem'</span>,</span>
+<span>                   log <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>                   tables <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'cited_by'</span>, <span class="st">'patent_citations'</span>, <span class="st">'abstract'</span>, <span class="st">'claims'</span>, <span class="st">'ipc'</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co">## If Google blocks access to the site, restart from the last patent downloaded.</span></span>
-<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">'rawfiles_raspagem/id.csv'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span><span class="fu">readr</span><span class="fu">::</span><span class="fu"><a href="https://readr.tidyverse.org/reference/read_delim.html" class="external-link">read_csv</a></span><span class="op">(</span><span class="st">'rawfiles_raspagem/log.csv'</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/distinct.html" class="external-link">distinct</a></span><span class="op">(</span><span class="va">id</span>, .keep_all <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/pull.html" class="external-link">pull</a></span><span class="op">(</span><span class="va">url</span><span class="op">)</span> <span class="op">-&gt;</span></span>
 <span>  <span class="va">urls_baixadas</span></span>
